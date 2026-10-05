@@ -12,9 +12,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     <style>
-        /* Global Custom Cursor: logo3.png (已修正为png格式) */
+        /* Global Custom Cursor: logo3.png */
         body, button, a, div {
             cursor: url('logo3.png') 16 16, auto !important;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
@@ -27,6 +31,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            position: relative;
         }
 
         /* Glassmorphism Panel */
@@ -166,14 +171,14 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Layered Canvas Background & Elements */
+        /* Layered Canvas Background & Elements - Fixed Positioning */
         #web3-bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; }
-        #earth-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 5; }
+        #earth-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 5; pointer-events: auto; }
         #laser-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 15; }
         #particle-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; }
     </style>
 </head>
-<body class="w-screen h-screen text-white relative select-none">
+<body class="w-screen h-screen text-white relative select-none overflow-hidden">
 
     <!-- 🌌 Background Canvas -->
     <canvas id="web3-bg-canvas"></canvas>
