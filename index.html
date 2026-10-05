@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earth Hub - Cyber Web3 VIBE (Hex & Circuit Background)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome 图标 -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Three.js (3D 渲染引擎) -->
+    <!-- Three.js (3D Rendering Engine) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     <style>
-        /* 全局自定义鼠标：logo1_3.jpg */
+        /* Global Custom Cursor: logo1_3.jpg */
         body, button, a, div {
             cursor: url('logo1_3.jpg') 16 16, auto !important;
         }
@@ -24,9 +24,12 @@
             padding: 0;
             width: 100vw;
             height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        /* 玻璃拟态面板 */
+        /* Glassmorphism Panel */
         .glass-panel {
             background: rgba(8, 20, 42, 0.75);
             backdrop-filter: blur(16px);
@@ -35,7 +38,7 @@
             box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
         }
 
-        /* ========== 👀 真实流畅眨眼 CSS 动画 ========== */
+        /* ========== 👀 Smooth Blinking CSS Animation ========== */
         @keyframes realBlink {
             0%, 82%, 100% {
                 transform: scaleY(1);
@@ -55,7 +58,7 @@
             display: inline-block;
         }
 
-        /* ========== ✨ 顶部标语：文字流光 + 炫酷闪烁霓虹特效 ========== */
+        /* ========== ✨ Top Slogan: Glowing Text & Neon Pulse Effects ========== */
         .vibe-text-glowing {
             background: linear-gradient(90deg, #38bdf8, #00f0ff, #facc15, #f43f5e, #a855f7, #38bdf8);
             background-size: 300% 100%;
@@ -74,7 +77,7 @@
             100% { filter: drop-shadow(0 0 16px rgba(250, 204, 21, 0.9)) drop-shadow(0 0 35px rgba(244, 63, 94, 0.6)); }
         }
 
-        /* ========== 🤖 机器人随机悬浮动画 ========== */
+        /* ========== 🤖 Mecha Robot Random Floating Animations ========== */
         @keyframes floatRandom1 {
             0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
             33% { transform: translate(25px, -35px) rotate(4deg); }
@@ -88,7 +91,7 @@
         .robot-float-1 { animation: floatRandom1 8s ease-in-out infinite; }
         .robot-float-2 { animation: floatRandom2 11s ease-in-out infinite; }
 
-        /* ========== 🌌 3D 机甲星际之门特效 ========== */
+        /* ========== 🌌 3D Stargate Portal Effects ========== */
         .stargate-frame {
             position: relative;
             padding: 6px;
@@ -163,48 +166,48 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* 层次分明的 Canvas 背景与层级 */
+        /* Layered Canvas Background & Elements */
         #web3-bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; }
         #earth-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 5; }
         #laser-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 15; }
         #particle-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; }
     </style>
 </head>
-<body class="w-screen h-screen text-white flex flex-col justify-between items-center relative select-none">
+<body class="w-screen h-screen text-white relative select-none">
 
-    <!-- 🌌 背景层：集成图片中的六边形蜂窝网格 + 数据流波浪 + 右侧精密电路走线 -->
+    <!-- 🌌 Background Canvas -->
     <canvas id="web3-bg-canvas"></canvas>
-    <!-- 🌍 3D 地球容器 -->
+    <!-- 🌍 3D Earth Container -->
     <div id="earth-container"></div>
-    <!-- ⚡ 激光与签到聚能光束画布 -->
+    <!-- ⚡ Laser & Focus Beam Canvas -->
     <canvas id="laser-canvas"></canvas>
-    <!-- ✨ 鼠标互动粒子画布 -->
+    <!-- ✨ Mouse Interactive Particle Canvas -->
     <canvas id="particle-canvas"></canvas>
 
-    <!-- 🎯 全球多点与流动连线【眨眼睛】专属标靶容器 -->
+    <!-- 🎯 Global Multi-point & Flowing Arch Target Container -->
     <div id="earth-eyes-container" class="absolute inset-0 pointer-events-none z-10 overflow-hidden"></div>
 
-    <!-- 签到触发后的全屏爆破【眨眼睛】Logo -->
+    <!-- Check-in Explosion Logo -->
     <div id="flash-logo-container" class="fixed top-1/2 left-1/2 z-50 pointer-events-none opacity-0 hidden transform -translate-x-1/2 -translate-y-1/2">
         <img src="logo2.png" alt="Golden Vibe Token" class="w-72 h-72 object-contain eye-blinking-img filter drop-shadow-[0_0_50px_rgba(250,204,21,0.9)]">
     </div>
 
-    <!-- 🤖 左右各 4 个机甲机器人（左侧 1~4，右侧 5~8） -->
+    <!-- 🤖 8 Mecha Robots (4 on Left, 4 on Right) -->
     <div class="absolute inset-0 pointer-events-none z-10 overflow-hidden">
-        <!-- 左侧 4 个 -->
+        <!-- Left Side -->
         <div class="bot-node absolute top-[15%] left-[5%] w-24 h-24 md:w-32 md:h-32 robot-float-1"><img src="1.png" class="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]"></div>
         <div class="bot-node absolute top-[38%] left-[3%] w-20 h-20 md:w-28 md:h-28 robot-float-2" style="animation-delay: -2s;"><img src="2.png" class="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]"></div>
         <div class="bot-node absolute top-[62%] left-[6%] w-28 h-28 md:w-36 md:h-36 robot-float-1" style="animation-delay: -4s;"><img src="3.png" class="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]"></div>
-        <div class="bot-node absolute bottom-[12%] left-[4%] w-24 h-24 md:w-32 md:h-32 robot-float-2" style="animation-delay: -6s;"><img src="4.png" class="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]"></div>
+        <div class="bot-node absolute bottom-[22%] left-[4%] w-24 h-24 md:w-32 md:h-32 robot-float-2" style="animation-delay: -6s;"><img src="4.png" class="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]"></div>
 
-        <!-- 右侧 4 个 -->
+        <!-- Right Side -->
         <div class="bot-node absolute top-[15%] right-[5%] w-28 h-28 md:w-36 md:h-36 robot-float-2" style="animation-delay: -1s;"><img src="5.png" class="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]"></div>
         <div class="bot-node absolute top-[38%] right-[3%] w-24 h-24 md:w-32 md:h-32 robot-float-1" style="animation-delay: -3s;"><img src="6.png" class="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]"></div>
         <div class="bot-node absolute top-[62%] right-[6%] w-20 h-20 md:w-28 md:h-28 robot-float-2" style="animation-delay: -5s;"><img src="7.png" class="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]"></div>
-        <div class="bot-node absolute bottom-[12%] right-[4%] w-24 h-24 md:w-32 md:h-32 robot-float-1" style="animation-delay: -7s;"><img src="8.png" class="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]"></div>
+        <div class="bot-node absolute bottom-[22%] right-[4%] w-24 h-24 md:w-32 md:h-32 robot-float-1" style="animation-delay: -7s;"><img src="8.png" class="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]"></div>
     </div>
 
-    <!-- 顶部 Banner -->
+    <!-- Top Banner -->
     <header class="w-full max-w-7xl mx-auto pt-6 px-4 flex flex-col items-center justify-center gap-3 z-20">
         <div class="text-center max-w-3xl py-1">
             <span class="vibe-text-glowing font-black text-sm sm:text-base md:text-lg tracking-wider">
@@ -219,53 +222,56 @@
         </div>
     </header>
 
-    <!-- 左下角实时 VIBE 动态面板 -->
-    <div class="fixed bottom-10 left-6 z-20 w-80 pointer-events-none hidden md:block">
+    <!-- Bottom-Left Real-time VIBE Stream Panel -->
+    <div class="fixed bottom-16 left-6 z-20 w-80 pointer-events-none hidden md:block">
         <div class="glass-panel p-4 rounded-2xl border border-cyan-400/40 pointer-events-auto shadow-2xl">
             <div class="flex items-center justify-between border-b border-cyan-500/30 pb-2 mb-3">
                 <div class="flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
                     <span class="text-xs font-bold tracking-wider text-cyan-300 uppercase">Live Vibe Stream</span>
                 </div>
-                <span class="text-[10px] text-cyan-400/80 font-mono">全球实时节点</span>
+                <span class="text-[10px] text-cyan-400/80 font-mono">Global Nodes</span>
             </div>
             <div id="vibe-stream-list" class="space-y-2 overflow-hidden max-h-48 flex flex-col justify-end"></div>
         </div>
     </div>
 
-    <!-- 底部操作按钮 -->
-    <div class="absolute bottom-16 z-20 flex flex-col items-center gap-2.5">
-        <div class="stargate-frame">
-            <div class="stargate-door-container">
-                <button id="checkin-btn" onclick="handleMechaCheckin()" class="w-full h-full bg-gradient-to-r from-cyan-600 via-teal-500 to-cyan-600 text-white font-black text-xs md:text-sm tracking-widest uppercase flex items-center justify-center gap-2 shadow-[inset_0_0_15px_rgba(0,0,0,0.8)]">
-                    <i class="fa-solid fa-bolt-lightning text-amber-300 animate-pulse"></i>
-                    <span id="btn-text">开启星际门 · 签到</span>
-                </button>
-                <div class="stargate-door stargate-door-left"><i class="fa-solid fa-angles-right text-cyan-300 text-xs mr-2 opacity-60"></i></div>
-                <div class="stargate-door stargate-door-right"><i class="fa-solid fa-angles-left text-cyan-300 text-xs ml-2 opacity-60"></i></div>
+    <!-- Main Content Bottom Container: Buttons & Footer -->
+    <div class="w-full flex flex-col items-center z-20 pb-2">
+        <!-- Action Buttons -->
+        <div class="flex flex-col items-center gap-2.5 mb-3">
+            <div class="stargate-frame">
+                <div class="stargate-door-container">
+                    <button id="checkin-btn" onclick="handleMechaCheckin()" class="w-full h-full bg-gradient-to-r from-cyan-600 via-teal-500 to-cyan-600 text-white font-black text-xs md:text-sm tracking-widest uppercase flex items-center justify-center gap-2 shadow-[inset_0_0_15px_rgba(0,0,0,0.8)]">
+                        <i class="fa-solid fa-bolt-lightning text-amber-300 animate-pulse"></i>
+                        <span id="btn-text">Open Stargate · Check In</span>
+                    </button>
+                    <div class="stargate-door stargate-door-left"><i class="fa-solid fa-angles-right text-cyan-300 text-xs mr-2 opacity-60"></i></div>
+                    <div class="stargate-door stargate-door-right"><i class="fa-solid fa-angles-left text-cyan-300 text-xs ml-2 opacity-60"></i></div>
+                </div>
+            </div>
+
+            <a href="https://testnet.vibevibe.fun/" target="_blank" class="w-[280px] py-2.5 rounded-full font-black text-xs md:text-sm text-slate-900 bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 shadow-[0_0_25px_rgba(251,191,36,0.6)] hover:shadow-[0_0_40px_rgba(251,191,36,0.9)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 border border-yellow-200">
+                <span>Step into the VIBE!</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+            
+            <div id="ip-info-panel" class="glass-panel px-4 py-1 rounded-full text-xs text-slate-300 flex items-center gap-2 mt-0.5">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                <span id="ip-text">Drag earth or check in to activate nodes...</span>
             </div>
         </div>
 
-        <a href="https://testnet.vibevibe.fun/" target="_blank" class="w-[280px] py-2.5 rounded-full font-black text-xs md:text-sm text-slate-900 bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 shadow-[0_0_25px_rgba(251,191,36,0.6)] hover:shadow-[0_0_40px_rgba(251,191,36,0.9)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 border border-yellow-200">
-            <span>Step into the VIBE!</span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-        </a>
-        
-        <div id="ip-info-panel" class="glass-panel px-4 py-1 rounded-full text-xs text-slate-300 flex items-center gap-2 mt-0.5">
-            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-            <span id="ip-text">拖拽地球或点击签到激活节点...</span>
-        </div>
+        <!-- Footer fixed at absolute bottom -->
+        <footer class="w-full py-2 text-center text-xs text-slate-400 bg-slate-950/40 backdrop-blur-md border-t border-cyan-500/10">
+            <span>Powered by </span>
+            <a href="https://x.com/xinlingdiantai" target="_blank" class="font-bold text-cyan-300 hover:text-amber-300 transition-colors inline-flex items-center gap-1">
+                <i class="fa-brands fa-x-twitter text-xs"></i>@xinlingdiantai
+            </a>
+        </footer>
     </div>
 
-    <!-- 页脚 -->
-    <footer class="w-full py-2 z-20 text-center text-xs text-slate-400 bg-slate-950/40 backdrop-blur-md border-t border-cyan-500/10">
-        <span>Powered by </span>
-        <a href="https://x.com/xinlingdiantai" target="_blank" class="font-bold text-cyan-300 hover:text-amber-300 transition-colors inline-flex items-center gap-1">
-            <i class="fa-brands fa-x-twitter text-xs"></i>@xinlingdiantai
-        </a>
-    </footer>
-
-    <!-- 🌌 背景 Canvas 渲染引擎（完美融合图示：左侧六边形网格 + 中间波动数据流 + 右侧精密电路走线） -->
+    <!-- 🌌 Background Canvas Engine Script -->
     <script>
         const bgCanvas = document.getElementById('web3-bg-canvas');
         const bgCtx = bgCanvas.getContext('2d');
@@ -273,7 +279,6 @@
         resizeBg();
         window.addEventListener('resize', resizeBg);
 
-        // 初始化六边形网格数据（左侧）
         const hexRadius = 28;
         const hexHeight = hexRadius * Math.sqrt(3);
         const hexWidth = hexRadius * 2;
@@ -298,14 +303,12 @@
         function renderTechBackground() {
             bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
             
-            // 1. 深空渐变背景
             let radialGrad = bgCtx.createRadialGradient(bgCanvas.width*0.5, bgCanvas.height*0.5, 50, bgCanvas.width*0.5, bgCanvas.height*0.5, bgCanvas.width*0.8);
             radialGrad.addColorStop(0, '#061c3a');
             radialGrad.addColorStop(1, '#020610');
             bgCtx.fillStyle = radialGrad;
             bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
 
-            // 2. 左侧：蜂窝六边形网格群
             bgCtx.save();
             const hexCols = Math.floor((bgCanvas.width * 0.45) / (hexWidth * 0.75));
             const hexRows = Math.floor(bgCanvas.height / hexHeight) + 1;
@@ -313,14 +316,12 @@
                 for (let c = 0; c < hexCols; c++) {
                     const x = c * hexWidth * 0.75 + 40;
                     const y = r * hexHeight + (c % 2 === 0 ? 0 : hexHeight * 0.5) + 20;
-                    // 动态调整透明度形成呼吸感
                     const alpha = 0.12 + Math.sin(waveOffset * 1.5 + c * 0.3 + r * 0.2) * 0.08;
                     drawHexagon(bgCtx, x, y, hexRadius * 0.95, Math.max(0.03, alpha));
                 }
             }
             bgCtx.restore();
 
-            // 3. 中间与贯穿全屏：多层数据波浪曲线
             bgCtx.save();
             for (let i = 0; i < 3; i++) {
                 bgCtx.beginPath();
@@ -339,11 +340,7 @@
             }
             bgCtx.restore();
 
-            // 4. 右侧：精密电路走线与数据指示面板（对应图示右侧元素）
             bgCtx.save();
-            const rightStartX = bgCanvas.width - 320;
-            
-            // 电路折线群
             const circuitPaths = [
                 { startY: 80, points: [[0, 0], [-100, 0], [-140, 40], [-260, 40]] },
                 { startY: 140, points: [[0, 0], [-80, 0], [-120, 30], [-220, 30]] },
@@ -368,14 +365,12 @@
                 bgCtx.shadowColor = '#00f0ff';
                 bgCtx.stroke();
 
-                // 终点/节点小亮圆
                 bgCtx.beginPath();
                 bgCtx.arc(cx, cy, 3, 0, Math.PI * 2);
                 bgCtx.fillStyle = '#00f0ff';
                 bgCtx.fill();
             });
 
-            // 右侧微型数据柱状图 (HUD Bar Charts)
             const barGroups = [
                 { x: bgCanvas.width - 220, y: 160 },
                 { x: bgCanvas.width - 160, y: bgCanvas.height - 200 }
@@ -396,7 +391,7 @@
         renderTechBackground();
     </script>
 
-    <!-- ⚡ 激光与签到定位光束 Canvas 系统 -->
+    <!-- ⚡ Laser & Target System Script -->
     <script>
         const laserCanvas = document.getElementById('laser-canvas');
         const laserCtx = laserCanvas.getContext('2d');
@@ -512,7 +507,7 @@
         drawLasers();
     </script>
 
-    <!-- 鼠标粒子系统 -->
+    <!-- Mouse Particle System Script -->
     <script>
         const pCanvas = document.getElementById('particle-canvas');
         const pCtx = pCanvas.getContext('2d');
@@ -540,7 +535,7 @@
         animateParticles();
     </script>
 
-    <!-- 🌍 3D 地球、全网密集连线、多点城市眨眼图标、连线动态流动眨眼图标同步渲染 -->
+    <!-- 🌍 3D Earth & Globe Interactive Logic Script -->
     <script>
         const container = document.getElementById('earth-container');
 
@@ -663,110 +658,142 @@
             });
 
             flowingEyeItems.forEach(item => {
-                const point3D = item.curve.getPoint(item.progress);
-                const worldPos = point3D.clone();
-                worldPos.applyMatrix4(globeGroup.matrixWorld);
-                worldPos.project(camera);
+                item.progress += item.speed * 0.01;
+                if (item.progress > 1) item.progress = 0;
+                const pt = item.curve.getPoint(item.progress);
+                pt.applyMatrix4(globeGroup.matrixWorld);
+                pt.project(camera);
 
-                const screenX = (worldPos.x *  .5 + .5) * window.innerWidth;
-                const screenY = (worldPos.y * -.5 + .5) * window.innerHeight;
+                const screenX = (pt.x *  .5 + .5) * window.innerWidth;
+                const screenY = (pt.y * -.5 + .5) * window.innerHeight;
 
-                if (worldPos.z > 1 || screenX < 0 || screenX > window.innerWidth || screenY < 0 || screenY > window.innerHeight) {
+                if (pt.z > 1) {
                     item.element.style.opacity = '0';
                 } else {
-                    item.element.style.opacity = '0.9';
+                    item.element.style.opacity = '1';
                     item.element.style.left = `${screenX}px`;
                     item.element.style.top = `${screenY}px`;
                 }
             });
-
-            return {
-                x: (cityMarkerElements[0].vector3.clone().applyMatrix4(globeGroup.matrixWorld).project(camera).x * .5 + .5) * window.innerWidth,
-                y: (cityMarkerElements[0].vector3.clone().applyMatrix4(globeGroup.matrixWorld).project(camera).y * -.5 + .5) * window.innerHeight
-            };
         }
 
         let isDragging = false;
-        let prevMouse = { x: 0, y: 0 };
-        window.addEventListener('mousedown', (e) => { isDragging = true; prevMouse = { x: e.clientX, y: e.clientY }; });
-        window.addEventListener('mousemove', (e) => {
+        let previousMousePosition = { x: 0, y: 0 };
+        const domElement = renderer.domElement;
+
+        domElement.addEventListener('mousedown', (e) => { isDragging = true; previousMousePosition = { x: e.clientX, y: e.clientY }; });
+        domElement.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-            globeGroup.rotation.y += (e.clientX - prevMouse.x) * 0.005;
-            globeGroup.rotation.x += (e.clientY - prevMouse.y) * 0.005;
-            prevMouse = { x: e.clientX, y: e.clientY };
+            const deltaX = e.clientX - previousMousePosition.x;
+            const deltaY = e.clientY - previousMousePosition.y;
+            globeGroup.rotation.y += deltaX * 0.006;
+            globeGroup.rotation.x += deltaY * 0.006;
+            previousMousePosition = { x: e.clientX, y: e.clientY };
         });
         window.addEventListener('mouseup', () => { isDragging = false; });
 
-        let clock = new THREE.Clock();
+        domElement.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                isDragging = true;
+                previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            }
+        });
+        domElement.addEventListener('touchmove', (e) => {
+            if (!isDragging || e.touches.length !== 1) return;
+            const deltaX = e.touches[0].clientX - previousMousePosition.x;
+            const deltaY = e.touches[0].clientY - previousMousePosition.y;
+            globeGroup.rotation.y += deltaX * 0.006;
+            globeGroup.rotation.x += deltaY * 0.006;
+            previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        });
+        window.addEventListener('touchend', () => { isDragging = false; });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
         function animate() {
             requestAnimationFrame(animate);
-            const delta = clock.getDelta();
-
             if (!isDragging) {
                 globeGroup.rotation.y += 0.0012;
             }
-
-            flowingEyeItems.forEach(item => {
-                item.progress += delta * item.speed * 0.35;
-                if (item.progress > 1) item.progress = 0;
-            });
-
             renderer.render(scene, camera);
             updateAllEarthMarkers();
         }
         animate();
-    </script>
 
-    <!-- 签到交互逻辑 -->
-    <script>
-        const sampleVibers = [
-            "Tokyo VIBER checked in!",
-            "New York node synchronized.",
-            "Singapore liquidity pool joined.",
-            "London gateway verified.",
-            "Seoul global node active.",
-            "Frankfurt mainnet connected."
-        ];
-
-        function addVibeStreamItem(text) {
-            const listEl = document.getElementById('vibe-stream-list');
-            if (!listEl) return;
-            const item = document.createElement('div');
-            item.className = "vibe-stream-item glass-panel px-3 py-2 rounded-xl text-xs flex items-center justify-between border border-cyan-400/20";
-            item.innerHTML = `<span class="text-cyan-300 font-mono">${text}</span><span class="text-[10px] text-amber-300">Just now</span>`;
-            listEl.appendChild(item);
-            if (listEl.children.length > 5) listEl.removeChild(listEl.children[0]);
-        }
-
-        setInterval(() => {
-            addVibeStreamItem(sampleVibers[Math.floor(Math.random() * sampleVibers.length)]);
-        }, 3500);
-
+        // Check-in Interaction Function
         function handleMechaCheckin() {
             const btnText = document.getElementById('btn-text');
             const ipText = document.getElementById('ip-text');
             const flashContainer = document.getElementById('flash-logo-container');
 
-            if (btnText) btnText.innerText = "星际连线中...";
-            if (ipText) ipText.innerText = "正在激活全球卫星定位，发射光束...";
+            btnText.innerHTML = "Stargate Activated · Connected!";
+            ipText.innerHTML = "Node successfully deployed. Welcome to the global VIBER matrix!";
 
-            const markerCoord = updateAllEarthMarkers();
-            triggerEarthTargetBeams(markerCoord.x, markerCoord.y);
-
-            if (flashContainer) {
-                flashContainer.classList.remove('hidden');
-                flashContainer.classList.add('logo-flash-active');
-                setTimeout(() => {
-                    flashContainer.classList.remove('logo-flash-active');
-                    flashContainer.classList.add('hidden');
-                }, 1300);
-            }
+            flashContainer.classList.remove('hidden');
+            flashContainer.classList.add('logo-flash-active');
 
             setTimeout(() => {
-                if (btnText) btnText.innerText = "签到成功 · 节点激活";
-                if (ipText) ipText.innerText = "成功接入 VIBE 全球主网！";
-                addVibeStreamItem("🎉 Your node successfully connected!");
-            }, 1200);
+                flashContainer.classList.remove('logo-flash-active');
+                flashContainer.classList.add('hidden');
+            }, 1300);
+
+            const randomLoc = checkinLocations[Math.floor(Math.random() * checkinLocations.length)];
+            const targetVec = latLonToVector3(randomLoc.lat, randomLoc.lon, globeRadius);
+            targetVec.applyMatrix4(globeGroup.matrixWorld);
+            targetVec.project(camera);
+
+            const screenX = (targetVec.x *  .5 + .5) * window.innerWidth;
+            const screenY = (targetVec.y * -.5 + .5) * window.innerHeight;
+
+            triggerEarthTargetBeams(screenX, screenY);
+            pushStreamMessage(`VIBER from [${randomLoc.name}] successfully checked in! ⚡`);
+
+            setTimeout(() => {
+                btnText.innerHTML = "Open Stargate · Check In";
+            }, 3000);
+        }
+
+        // Live Vibe Stream Simulation
+        const sampleActions = [
+            "checked in from Tokyo node",
+            "minted VIBE Genesis NFT",
+            "bridged liquidity to Stargate",
+            "shared VIBER node on X",
+            "activated cyberpunk shield",
+            "joined the global VIBE network"
+        ];
+        const sampleNames = ["CryptoVibe", "AirdropMaster", "CyberAlchemist", "NodeRunner", "SatoshiFan", "MetaViber", "0xAlpha", "StarGlider"];
+
+        function pushStreamMessage(customMsg) {
+            const list = document.getElementById('vibe-stream-list');
+            const item = document.createElement('div');
+            item.className = "vibe-stream-item text-[11px] text-slate-300 bg-slate-900/60 px-3 py-1.5 rounded-xl border border-cyan-500/20 flex items-center justify-between";
+            
+            let text = customMsg;
+            if (!text) {
+                const name = sampleNames[Math.floor(Math.random() * sampleNames.length)];
+                const action = sampleActions[Math.floor(Math.random() * sampleActions.length)];
+                text = `<span class="text-cyan-300 font-bold">${name}</span> ${action}`;
+            }
+
+            item.innerHTML = `<span>${text}</span><span class="text-[9px] text-slate-500 font-mono">Just now</span>`;
+            list.appendChild(item);
+
+            if (list.children.length > 5) {
+                list.removeChild(list.children[0]);
+            }
+        }
+
+        setInterval(() => {
+            pushStreamMessage();
+        }, 4000);
+
+        for (let i = 0; i < 3; i++) {
+            pushStreamMessage();
         }
     </script>
 </body>
